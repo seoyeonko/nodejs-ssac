@@ -1,0 +1,17 @@
+<html>
+  <body>
+    <h1>ejs의 test 파일입니다.</h1>
+
+    <h3><%=parameter1%></h3>
+
+    <div style="background-color: yellow;">
+      <%
+      for (var i=0; i<parameter1; i++) {
+        __append("<h1>" + i + "</h1><br>")
+      }
+      %>
+    </div>
+
+    <img src="http://101.101.218.8:8000/aaa/apple.jpeg" alt="사과">
+  </body>
+</html>
