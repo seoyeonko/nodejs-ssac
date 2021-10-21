@@ -33,9 +33,26 @@ app.get('/form', (req, res) => {
 app.post('/form', (req, res) => {
   console.log('post form 들어옴');
   console.log(req.body);
+  console.log('여기는 쿠키다!'+req.headers.cookie)
   res.send('Complete form!');
+  // res.render('form', {user: req.body})
+});
+
+// form 실습
+app.get('/formTest', (req, res) => {
+  res.render('formTest', {title: "Node를 배워보자!"});
+});
+  
+app.post('/formTest2', (req, res) => {
+  console.log('post formTest 들어옴');
+  console.log(req.body);
+  // res.send('Complete formTest!');
+  res.render('formTest2', {id: req.body.usrid})
+  
+
 });
 
 app.listen(port, () => {
   console.log('8000!');
 });
+
