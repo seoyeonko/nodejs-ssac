@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Bootstrap (CSS, JS) -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Web Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet" />
+
+    <title>로그인</title>
+
+    <style>
+      html,
+      body {
+        height: 100vh;
+        background-color: white;
+      }
+
+      #container {
+        width: 100%;
+        height: 100vh;
+      }
+
+      #site_name {
+        font-family: "Black Han Sans", sans-serif;
+      }
+      #site_name:hover {
+        text-shadow: 2px 2px 2px #f2df80;
+      }
+
+      a:link,
+      a:visited,
+      a:hover {
+        text-decoration: none;
+      }
+      #site_name {
+        color: black;
+      }
+
+      .login_box {
+        min-width: 30vw;
+        min-height: 60vh;
+        padding: 10vh 0;
+        box-shadow: 5px 5px 5px 5px rgba(0, 0, 255, 0.2);      
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container" class="d-flex justify-content-center align-items-center">
+      <div class="login_box d-flex justify-content-center align-items-center bg-white my-5 px-5 rounded">
+        <div>
+          <h1 class="text-center">
+            <a href="http://101.101.218.8:8000/" id="site_name">오늘 뭐먹지?</a>
+          </h1>
+          <h3 class="text-center">아이디 찾기</h3>
+          <div class="d-flex justify-content-center">
+          </div>
+          <div class="d-flex justify-content-center py-5">
+            회원님의 아이디는 <span class="fw-bold text-primary">&nbsp;<%=email%></span> 입니다.
+          </div>
+          <div class="d-flex justify-content-center pb-2">
+            <a href="http://101.101.218.8:8000/findUsrpw">비밀번호 찾기</a>&nbsp;|&nbsp; 
+            <a href="http://101.101.218.8:8000/login">로그인</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

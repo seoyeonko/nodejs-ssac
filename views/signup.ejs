@@ -40,7 +40,7 @@
       html,
       body {
         height: 100vh;
-        background-color: #f2efe9;
+        background-color: white;
       }
 
       #container {
@@ -55,7 +55,9 @@
         text-shadow: 2px 2px 2px #f2df80;
       }
 
-      a:link,
+      a:link {
+        text-decoration: none;
+      }
       a:visited,
       a:hover {
         text-decoration: none;
@@ -66,45 +68,42 @@
         min-width: 30vw;
         min-height: 90vh;
         padding: 10vh 0;
+        box-shadow: 5px 5px 5px 5px rgba(0, 0, 255, 0.2);      
       }
     </style>
   </head>
   <body>
     <div id="container" class="d-flex justify-content-center align-items-center">
       <div class="signup_box d-flex justify-content-center align-items-center bg-white my-5 px-5 rounded">
-        <form action="http://101.101.218.8:8000/formTest2" method="POST">
+        <form action="http://101.101.218.8:8000/signup" method="POST">
           <h1 class="text-center" id="site_name">
-            <a href="#"> 오늘 뭐먹지? </a>
+            <%=title%>          
           </h1>
-          <h3 class="text-center"><%=title%></h3>
           <div class="my-3">
             <label for="usrid" class="d-block py-1"> 아이디 </label>
             <input class="w-100 form-control" type="text" name="usrid" />
-            <!-- <span class="text-danger"><strong>{{ err_id_check }}</strong> </span> -->
           </div>
           <div class="my-3">
             <label for="usrpw" class="d-block py-1"> 비밀번호 </label>
-            <input class="w-100 form-control" type="password" name="usrpw" id="usrpw" />
+            <input class="w-100 form-control" type="password" name="pw" id="usrpw" />
           </div>
           <div class="my-3">
             <label for="usrpw_check" class="d-block py-1"> 비밀번호 재확인 </label>
-            <input class="w-100 form-control" type="password" name="usrpw_check" id="usrpw_check" />
-            <!-- <span class="text-danger"><strong>{{ err_pw_check }}</strong> </span> -->
+            <input class="w-100 form-control" type="password" name="pw_check" id="usrpw_check" />
           </div>
           <div class="my-3">
             <label for="usrname" class="d-block py-1"> 이름 </label>
-            <input class="w-100 form-control" type="text" name="usrname" />
+            <input class="w-100 form-control" type="text" name="name" />
           </div>
           <div class="my-3">
             <label for="usremail" class="d-block py-1"> 이메일 </label>
-            <input class="w-100 form-control" type="email" name="usremail" />
+            <input class="w-100 form-control" type="email" name="email" />
           </div>
           <div class="my-3">
             <label for="usrgender" class="d-block py-1"> 성별 </label>
-            <select class="w-100 form-select" name="usrgender">
-              <option value="W">여성</option>
-              <option value="M">남성</option>
-              <option value="N">선택 안함</option>
+            <select class="w-100 form-select" name="gender">
+              <option value="0">남성</option>
+              <option value="1">여성</option>
             </select>
           </div>
           
