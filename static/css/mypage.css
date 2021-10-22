@@ -1,0 +1,45 @@
+.tit_mypage {
+  font-family: "Do Hyeon", sans-serif;
+
+  font-weight: bold;
+  font-size: 2rem;
+  text-shadow: 1px 1px 2px #f2cb05;
+  border-bottom: solid #f2cb05;
+}
+
+.subtit_mypage {
+  font-family: "Do Hyeon", sans-serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.detail_post {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+a:hover {
+  font-weight: bold;
+}
+
+.host_usrid_box {
+  font-family: "Do Hyeon", sans-serif;
+  font-size: 1.4rem;
+}
+.host_usrid {
+  font-weight: bolder;
+}
+.host_info_box {
+  font-family: "Noto Sans KR", sans-serif;
+}
+.host_info_value {
+  font-weight: bold;
+}
+
+.no_posting_box {
+  height:20vh;
+}
+
+.no_posting_msg {
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 1.2rem;
+}

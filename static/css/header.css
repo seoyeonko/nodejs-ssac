@@ -1,0 +1,22 @@
+
+#header {
+  height: 100px;
+}
+
+.site_name {
+  font-family: "Black Han Sans", sans-serif;
+}
+.site_name:link,
+.site_name:visited {
+  text-decoration: none;
+  color: black;
+}
+
+.menu_item {
+  font-family: "Do Hyeon", sans-serif;
+  letter-spacing: 1.5px;
+  font-size: 1.1rem;
+}
+/* .menu_item:hover {
+  text-shadow: 1px 1px 1px #f2e205;
+} */

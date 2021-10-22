@@ -10,7 +10,7 @@ app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 
 // static 
-app.use('/aaa', express.static(__dirname+ '/static'));
+app.use('/', express.static(__dirname+ '/static')); 
 
 // form
 const body = require('body-parser');
@@ -126,6 +126,35 @@ app.post('/updateUsrpw', (req, res) => {
 		}
   });
 });
+
+// 마이페이지 
+app.get('/mypg', (req, res) => {
+  res.render('mypage');
+});
+
+// 회원탈퇴
+app.get('/leaveMem', (req, res) => {
+  res.render('leaveMem');
+});
+
+app.post('/leaveMem', (req, res) => {
+  var sql1 = `SELECT * FROM users WHERE id='2'`; 
+  var sql2 = `DELETE FROM users WHERE id='2'`; // 임의 삭제
+
+  conn.query(sql1, (err, results) => {
+    // console.log(results)
+    // console.log(results.length)
+    if (results.length == 1) {
+      conn.query(sql2, (err) => {
+        console.log('data deleted!');
+        res.render('main');
+      });
+    } else {
+      console.log('failed!!!! : ' + err);
+    }
+  })
+});
+
 
 
 app.listen(port, () => {

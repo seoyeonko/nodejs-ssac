@@ -1,0 +1,6 @@
+html,
+body {
+  overflow-x: hidden; /* 가로 스크롤 안생기게 */
+  height: 100vh;
+  background-color: #f2efe9;
+}
