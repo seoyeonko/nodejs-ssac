@@ -169,6 +169,27 @@ app.post('/leaveMem', (req, res) => {
   // });
 });
 
+// goodplaces
+app.get('/goodplaces/placeList', (req, res) => {
+  res.render('placeList');
+});
+
+app.get('/goodplaces/createPlace', (req, res) => {
+  res.render('createPlace');
+});
+
+app.post('/goodplaces/createPlace', (req, res) => {
+  var sql = `INSERT INTO places (name, review) VALUES ('${req.body.title}', '${req.body.review}');`;
+  conn.query(sql, (err) => {
+    if (err) {
+      console.log('failed!! : ' + err);
+    } else {
+      console.log('data inserted!');
+    }
+  });
+  res.render('placeList');
+});
+
 app.listen(port, () => {
   console.log('8000!');
 });

@@ -1,0 +1,17 @@
+<%- include ("./base") %>
+
+<div class="container">
+  맛집 등록하기
+
+  <form action="http://101.101.218.8:8000/goodplaces/createPlace" method="POST">
+    <div>
+      제목: <input type="text" name="title" /><br />
+      후기: <textarea type="text" name="review"></textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="d-flex justify-content-center py-3">
+      <button type="submit" class="btn btn-primary">등록하기</button>
+    </div>
+  </form>
+</div>
