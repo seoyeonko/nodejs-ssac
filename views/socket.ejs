@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
+    <!-- 이 라이브러리를 이용해 socket 접속 (ajax로 만든 socket 라이브러리) -->
+
+    <script>
+      var socket = io.connect(); // view에서의 소켓 연결 
+      // on : 통신을 받음 (수신)
+      // emit : 통신을 보냄 (송신)
+      // socket.emit("보낼 이름"[, {데이터}]); // 첫번째 인자: 필수!
+      
+      // socket.emit("a", {name: "홍길동"});
+      //socket.emit("b");
+      //socket.on("c", function(data) {
+      //  alert("ccc");
+      //});
+
+      function go() {
+        socket.emit("a", document.getElementById("abc").value);
+      }
+
+      socket.on("send", function(data){
+        alert(data);
+      });
+
+    </script>
+  </head>
+  <body>
+    <h1>Socket View 파일</h1>
+
+    <input type="text" id="abc">
+    <button type="button" onclick="go();">click</button>
+  </body>
+</html>
