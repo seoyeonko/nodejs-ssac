@@ -35,13 +35,9 @@ app.get('/', (req, res) => {
   res.render('main.ejs');
 });
 
-app.get('/test', (req, res) => {
-  res.render('test', { parameter1: 5, parameter2: '코딩온' });
-});
-
 // form
 app.get('/form', (req, res) => {
-  res.render('form');
+  res.render('lecture/form');
 });
 
 app.post('/form', (req, res) => {
@@ -62,7 +58,7 @@ var conn = mysql.createConnection({
 
 // 회원가입
 app.get('/signup', (req, res) => {
-  res.render('signup', { title: 'Node를 배워보자!' });
+  res.render('member/signup', { title: 'Node를 배워보자!' });
 });
 
 app.post('/signup', (req, res) => {
@@ -80,7 +76,7 @@ app.post('/signup', (req, res) => {
     }
   });
 
-  res.render('signupResult', {
+  res.render('member/signupResult', {
     id: req.body.usrid,
     name: req.body.name,
     email: req.body.email,
@@ -90,12 +86,12 @@ app.post('/signup', (req, res) => {
 
 // 로그인
 app.get('/login', (req, res) => {
-  res.render('login');
+  res.render('member/login');
 });
 
 // 아이디 찾기
 app.get('/findUsrid', (req, res) => {
-  res.render('findUsrid');
+  res.render('member/findUsrid');
 });
 
 app.post('/findUsrid', (req, res) => {
@@ -106,13 +102,13 @@ app.post('/findUsrid', (req, res) => {
     } else {
       console.log('data selected!');
     }
-    res.render('findUsrid2', { email: results[0]['usrid'] }); // email (unique key이므로 하나만 존재)
+    res.render('member/findUsrid2', { email: results[0]['usrid'] }); // email (unique key이므로 하나만 존재)
   });
 });
 
 // 비밀번호 변경(초기화)
 app.get('/findUsrpw', (req, res) => {
-  res.render('findUsrpw');
+  res.render('member/findUsrpw');
 });
 
 app.post('/findUsrpw', (req, res) => {
@@ -123,7 +119,7 @@ app.post('/findUsrpw', (req, res) => {
       // 아이디, 이름, 이메일 중 잘못 입력시 todo
     } else {
       console.log('data selected!');
-      res.render('findUsrpw2', { usrid: results[0]['usrid'] });
+      res.render('member/findUsrpw2', { usrid: results[0]['usrid'] });
     }
   });
 });
@@ -137,19 +133,19 @@ app.post('/updateUsrpw', (req, res) => {
     } else {
       console.log('data selected!');
       console.log(req.body.pw);
-      res.render('login');
+      res.render('member/login');
     }
   });
 });
 
 // 마이페이지
 app.get('/mypg', (req, res) => {
-  res.render('mypage');
+  res.render('member/mypage');
 });
 
 // 회원탈퇴
 app.get('/leaveMem', (req, res) => {
-  res.render('leaveMem');
+  res.render('member/leaveMem');
 });
 
 app.post('/leaveMem', (req, res) => {
@@ -171,11 +167,11 @@ app.post('/leaveMem', (req, res) => {
 
 // goodplaces
 app.get('/goodplaces/placeList', (req, res) => {
-  res.render('placeList');
+  res.render('goodplaces/placeList');
 });
 
 app.get('/goodplaces/createPlace', (req, res) => {
-  res.render('createPlace');
+  res.render('goodplaces/createPlace');
 });
 
 app.post('/goodplaces/createPlace', (req, res) => {
@@ -187,7 +183,7 @@ app.post('/goodplaces/createPlace', (req, res) => {
       console.log('data inserted!');
     }
   });
-  res.render('placeList');
+  res.render('goodplaces/placeList');
 });
 
 app.listen(port, () => {
