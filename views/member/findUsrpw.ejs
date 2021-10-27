@@ -21,7 +21,10 @@
     <!-- Web Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap"
+      rel="stylesheet"
+    />
 
     <title>로그인</title>
 
@@ -38,7 +41,7 @@
       }
 
       #site_name {
-        font-family: "Black Han Sans", sans-serif;
+        font-family: 'Black Han Sans', sans-serif;
       }
       #site_name:hover {
         text-shadow: 2px 2px 2px #f2df80;
@@ -57,13 +60,27 @@
         min-width: 30vw;
         min-height: 60vh;
         padding: 10vh 0;
-        box-shadow: 5px 5px 5px 5px rgba(0, 0, 255, 0.2);      
+        box-shadow: 5px 5px 5px 5px rgba(0, 0, 255, 0.2);
       }
     </style>
   </head>
   <body>
-    <div id="container" class="d-flex justify-content-center align-items-center">
-      <div class="login_box d-flex justify-content-center align-items-center bg-white my-5 px-5 rounded">
+    <div
+      id="container"
+      class="d-flex justify-content-center align-items-center"
+    >
+      <div
+        class="
+          login_box
+          d-flex
+          justify-content-center
+          align-items-center
+          bg-white
+          my-5
+          px-5
+          rounded
+        "
+      >
         <form action="http://101.101.218.8:8000/findUsrpw" method="POST">
           <h1 class="text-center">
             <a href="http://101.101.218.8:8000/" id="site_name">오늘 뭐먹지?</a>
@@ -75,14 +92,14 @@
             <input class="w-100 form-control" type="text" name="usrid" />
           </div>
           <div class="my-3">
-            <label for="usrname" class="d-block py-1">이름</label>
-            <input class="w-100 form-control" type="text" name="name" />
-          </div>
-          <div class="my-3">
             <label for="usremail" class="d-block py-1">이메일</label>
             <input class="w-100 form-control" type="email" name="email" />
           </div>
-          
+          <div class="my-3">
+            <label for="usrname" class="d-block py-1">이름</label>
+            <input class="w-100 form-control" type="text" name="name" />
+          </div>
+
           <div class="d-flex justify-content-center pt-3">
             <button type="submit" class="btn btn-primary">확인</button>
           </div>
