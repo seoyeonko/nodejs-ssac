@@ -1,34 +1,61 @@
 <html>
   <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
     <!-- 이 라이브러리를 이용해 socket 접속 (ajax로 만든 socket 라이브러리) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
 
-    <script>
-      var socket = io.connect(); // view에서의 소켓 연결 
-      // on : 통신을 받음 (수신)
-      // emit : 통신을 보냄 (송신)
-      // socket.emit("보낼 이름"[, {데이터}]); // 첫번째 인자: 필수!
-      
-      // socket.emit("a", {name: "홍길동"});
-      //socket.emit("b");
-      //socket.on("c", function(data) {
-      //  alert("ccc");
-      //});
+    <!-- jquery -->
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
 
-      function go() {
-        socket.emit("a", document.getElementById("abc").value);
+    <style>
+      .everymsg {
+        color: black;
       }
-
-      socket.on("send", function(data){
-        alert(data);
-      });
-
-    </script>
+      .sysmsg {
+        color: blue;
+      }
+    </style>
   </head>
   <body>
-    <h1>Socket View 파일</h1>
+    <h1>채팅채팅</h1>
+    <input type="text" id="abc" />
+    <button type="button" onclick="go();">send</button>
+    <div id="chat"></div>
 
-    <input type="text" id="abc">
-    <button type="button" onclick="go();">click</button>
+    <script>
+      // view에서의 소켓 연결
+      // io.connect(): 라이브러리 코드에 정의되어 있음
+      var socket = io.connect();
+      console.log(socket);
+
+      // TODO: enter key event 처리
+      function go() {
+        socket.emit('sendMsg', document.getElementById('abc').value);
+        document.getElementById('abc').value = '';
+      }
+
+      socket.on('newMsg', (data) => {
+        // console.log(data);
+        // console.log(`<- newMsg: ${data}`);
+        //$('#chat').append(data + '<br>');
+
+        $('#chat').append(
+          `<span class="everymsg">${data['socketid']}</span> : <span class="sysmsg">${data['message']}</span><br />`
+
+          //'<span class="everymsg">' +
+          //  data['socketid'] +
+          //  '</span> : <span class="systemmsg">' +
+          //  data['message'] +
+          //  '</span><br>'
+        );
+      });
+
+      socket.on('notice', (data) => {
+        $('#chat').append(`** ${data} **`);
+      });
+    </script>
   </body>
 </html>

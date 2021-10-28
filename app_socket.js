@@ -3,10 +3,7 @@ const app = express();
 const port = 8000; // port number
 
 const http = require('http').Server(app);
-const io = require("socket.io")(http);
-// 소켓은 http 모듈에 연결
-// express - http 연결
-// http에서 socket 사용
+const io = require('socket.io')(http);
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -16,29 +13,20 @@ app.get('/', (req, res) => {
 });
 
 // io.on(): 서버에서의 소켓 연결 (셋팅)
-io.on("connection", function(socket) {
+// socket.emit(): 보낼 때
+// socket.on(): 받을 때
+io.on('connection', function (socket) {
   // socket이 연결되면 클라이언트가 이 내부 작업을 함
-  console.log("Socket connected")
-  // socket과 관련한 통신 작업을 모두 처리
+  console.log('Socket connected');
 
-  // 보낼 때: socket.emit
-  // 받을 때: socket.on
-
-  socket.on("a", (data) => {
-    console.log(data);
-    // socket.emit("c");
-    socket.emit("send", "hi");
-  });
-  
-  socket.on("b", (data) => {
-    console.log("bbb");
+  socket.on('sendMsg', (msg) => {
+    // io.emit('newMsg', `${socket.id}님: ${msg}`);
+    io.emit('newMsg', { socketid: socket.id, message: msg });
   });
 
-  // 연결 끊기
-  socket.on("disconnect", () => {
-    console.log("disconnect");
+  socket.on('disconnect', () => {
+    io.emit('notice', `${socket.id}님 나감`);
   });
-
 });
 
 http.listen(port, () => {
