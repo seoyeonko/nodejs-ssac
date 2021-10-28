@@ -12,7 +12,16 @@ app.get('/', (req, res) => {
   res.render('socket');
 });
 
-let nick_array = [];
+function getTime() {
+  const now = new Date();
+  let hour = now.getHours();
+  let min = now.getMinutes();
+
+  hour = hour >= 10 ? hour : '0' + hour;
+  min = min >= 10 ? min : '0' + min;
+
+  return `${hour}:${min}`;
+}
 
 // io.on(): 서버에서의 소켓 연결 (셋팅)
 // socket.emit(): 보낼 때
@@ -23,7 +32,11 @@ io.on('connection', function (socket) {
   io.emit('noticeIn', { notice: `${socket.id}님이 입장했습니다.` });
 
   socket.on('sendMsg', (msg) => {
-    io.emit('newMsg', { socketid: msg['nickname'], message: msg['message'] });
+    io.emit('newMsg', {
+      socketid: msg['nickname'],
+      message: msg['message'],
+      now: getTime(),
+    });
   });
 
   socket.on('disconnect', () => {

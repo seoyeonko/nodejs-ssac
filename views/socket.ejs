@@ -1,4 +1,4 @@
-<html>
+<html lang="ko">
   <head>
     <!-- 이 라이브러리를 이용해 socket 접속 (ajax로 만든 socket 라이브러리) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
@@ -10,57 +10,93 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- Bootstrap -->
+    <!-- Bootstrap (CSS, JS) -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
     <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
       crossorigin="anonymous"
     ></script>
 
     <style>
+      .tit_chat {
+        background-color: #ff9f88;
+        padding: 4px 8px;
+        font-size: 24px;
+        font-weight: bold;
+      }
       #chat-box {
         background-color: #f8f8ff;
-        border: 1px solid #1d1d1f;
-        width: 400px;
-        height: 500px;
+        height: 600px;
         overflow-y: auto;
+      }
+      #chat-item-box {
+        display: flex;
+        align-items: flex-end;
       }
       #chat-item {
         background-color: #7289f4;
-        border-radius: 4px;
-        width: 200px;
-        margin: 8px;
-        padding: 4px;
+        border-radius: 8px;
+        min-width: 50px;
+        max-width: 300px;
+        margin: 6px 4px 6px 12px;
+        padding: 6px;
         color: #fff;
       }
+      .time {
+        font-size: 10px;
+        margin: 4px 0;
+      }
       .notice {
-        color: #1d1d1f;
+        color: #303142;
         font-style: italic;
         font-size: 14px;
         text-align: center;
+        margin: 2px 0;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>HiChat</h1>
       <div id="chat-box">
+        <div class="tit_chat">Chat Chat</div>
         <div id="chat"></div>
       </div>
-      <input
-        type="text"
-        id="nick"
-        placeholder="Change your name"
-        onkeypress="pressEnter()"
-        autofocus
-      />
-      <input
-        type="text"
-        id="msg"
-        onkeypress="pressEnter()"
-        placeholder="Write here..."
-      />
-      <button type="button" onclick="sendChat()">SEND</button>
+      <div class="row">
+        <div class="col-3">
+          <input
+            type="text"
+            id="nick"
+            class="form-control"
+            placeholder="Change your name"
+            onkeypress="pressEnter()"
+            autofocus
+          />
+        </div>
+        <div class="col-8">
+          <input
+            type="text"
+            id="msg"
+            class="form-control"
+            onkeypress="pressEnter()"
+            placeholder="Write here..."
+          />
+        </div>
+        <div class="col-1">
+          <button
+            class="btn btn-outline-dark"
+            type="button"
+            onclick="sendChat()"
+          >
+            SEND
+          </button>
+        </div>
+      </div>
     </div>
 
     <script>
@@ -68,6 +104,7 @@
       // io.connect(): 라이브러리 코드에 정의되어 있음
       let socket = io.connect();
       console.log(socket);
+      let cnt;
 
       function pressEnter() {
         if (event.keyCode == 13) sendChat();
@@ -87,8 +124,11 @@
 
       socket.on('newMsg', (data) => {
         $('#chat').append(
-          `<div id="chat-item">
-            <span>${data['socketid']}</span> : <span>${data['message']}</span>
+          `<div id="chat-item-box">
+            <div id="chat-item">
+              <span>${data['socketid']}</span> : <span>${data['message']}</span>
+            </div>
+            <span class="time">${data['now']}</span>
           </div>`
         );
 
