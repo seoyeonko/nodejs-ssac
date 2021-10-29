@@ -31,12 +31,18 @@ io.on('connection', function (socket) {
   console.log('Socket connected');
   io.emit('noticeIn', { notice: `${socket.id}님이 입장했습니다.` });
 
+  socket.emit('skcreated', { socketid: socket.id }); // client에게 보낼 socketid(보내는이의 아이디)
+
   socket.on('sendMsg', (msg) => {
     io.emit('newMsg', {
       socketid: msg['nickname'],
       message: msg['message'],
       now: getTime(),
     });
+    socket.emit('myMsg', {
+      message: msg['message'],
+      now: getTime(),
+    }); // msg
   });
 
   socket.on('disconnect', () => {
