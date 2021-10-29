@@ -136,6 +136,9 @@
 
       socket.on('myMsg', (data) => {
         // 내 메세지인 경우, 우정렬 출력되도록
+        console.log('** myMsg **');
+        console.log(data);
+
         $('#chat').append(
           `<div id="mychat-item-box">
             <span class="time">${data['now']}</span>
@@ -144,11 +147,17 @@
             </div>
           </div>`
         );
+
+        $('#chat-box').scrollTop($('#chat').height()); // scroll
       });
 
       socket.on('newMsg', (data) => {
-        // 나 != 발신인
-        if (socket_id != data['socketid']) {
+        // 나 != 발신인 // err 여기서 에러났던듯 (시리얼 넘버 vs. 변경된 닉네임)
+        if (socket_id['socketid'] != data['socketid']) {
+          console.log('** newMsg (1) **');
+          console.log(socket_id['socketid']); // 소켓아이디 (시리얼 넘버)
+          console.log('** newMsg (2) **');
+          console.log(data['socketid']); // 변경된 닉네임
           $('#chat').append(
             `<div id="chat-item-box">
               <div id="chat-item">

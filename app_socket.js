@@ -35,7 +35,7 @@ io.on('connection', function (socket) {
 
   socket.on('sendMsg', (msg) => {
     io.emit('newMsg', {
-      socketid: msg['nickname'],
+      socketid: socket.id, // 변경된 닉네임 -> 시리얼 넘버
       message: msg['message'],
       now: getTime(),
     });
