@@ -25,10 +25,15 @@
 
     <style>
       .tit_chat {
-        background-color: #ff9f88;
+        /* background-color: #ff9f88; */
         padding: 4px 8px;
         font-size: 24px;
         font-weight: bold;
+      }
+      #list-box {
+        background-color: #ffcb68;
+        height: 600px;
+        overflow-y: auto;
       }
       #chat-box {
         background-color: #f8f8ff;
@@ -45,13 +50,22 @@
         justify-content: right;
       }
       #chat-item {
-        background-color: #7289f4;
+        background-color: #303142;
+        color: #f8f8ff;
         border-radius: 8px;
         min-width: 50px;
         max-width: 300px;
         margin: 6px 4px 6px 12px;
         padding: 6px;
-        color: #fff;
+      }
+      #mychat-item {
+        background-color: #7289f4;
+        color: #f8f8ff;
+        border-radius: 8px;
+        max-width: 300px;
+        margin: 6px 12px 6px 4px;
+        padding: 6px;
+        text-align: end;
       }
       .time {
         font-size: 10px;
@@ -68,9 +82,15 @@
   </head>
   <body>
     <div class="container">
-      <div id="chat-box">
-        <div class="tit_chat">Chat Chat</div>
-        <div id="chat"></div>
+      <div class="row">
+        <div class="col-3" id="list-box">
+          <div class="tit_chat">User List</div>
+          <div>userlist...</div>
+        </div>
+        <div class="col-9" id="chat-box">
+          <div class="tit_chat">Chat Chat</div>
+          <div id="chat"></div>
+        </div>
       </div>
       <div class="row">
         <div class="col-3">
@@ -102,6 +122,7 @@
           </button>
         </div>
       </div>
+      <h1><%=userNick%></h1>
     </div>
 
     <script>
@@ -142,7 +163,7 @@
         $('#chat').append(
           `<div id="mychat-item-box">
             <span class="time">${data['now']}</span>
-            <div id="chat-item">
+            <div id="mychat-item">
               <span>${data['message']}</span>
             </div>
           </div>`

@@ -1,15 +1,27 @@
 const express = require('express');
 const app = express();
-const port = 8000; // port number
-
+const body = require('body-parser');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+
+const PORT = 8000; // PORT number
+let userNick;
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
-app.get('/', (req, res) => {
-  res.render('socket');
+app.use(body.urlencoded({ extended: false }));
+app.use(body.json());
+
+app.get('/chat', (req, res) => {
+  res.render('setNick');
+});
+
+app.post('/chat', (req, res) => {
+  console.log('nickname 설정 완료');
+  console.log(req.body.nickname);
+  userNick = req.body.nickname;
+  res.render('socket', { userNick: userNick });
 });
 
 function getTime() {
@@ -29,6 +41,7 @@ function getTime() {
 io.on('connection', function (socket) {
   // socket이 연결되면 클라이언트가 이 내부 작업을 함
   console.log('Socket connected');
+
   io.emit('noticeIn', { notice: `${socket.id}님이 입장했습니다.` });
 
   socket.emit('skcreated', { socketid: socket.id }); // client에게 보낼 socketid(보내는이의 아이디)
@@ -50,6 +63,6 @@ io.on('connection', function (socket) {
   });
 });
 
-http.listen(port, () => {
+http.listen(PORT, () => {
   console.log('8000!');
 });
