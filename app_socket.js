@@ -6,6 +6,8 @@ const io = require('socket.io')(http);
 
 const PORT = 8000; // PORT number
 let userNick;
+let userList = []; // 배열 원소: { socketid, nickname }
+// userList.length = 0; // 초기화
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -18,9 +20,7 @@ app.get('/chat', (req, res) => {
 });
 
 app.post('/chat', (req, res) => {
-  console.log('nickname 설정 완료');
-  console.log(req.body.nickname);
-  userNick = req.body.nickname;
+  userNick = req.body.nickname.trim();
   res.render('socket', { userNick: userNick });
 });
 
@@ -38,11 +38,21 @@ function getTime() {
 // io.on(): 서버에서의 소켓 연결 (셋팅)
 // socket.emit(): 보낼 때
 // socket.on(): 받을 때
+// io: socket.io
+// socket: connection 성공시, 커넥션 정보
 io.on('connection', function (socket) {
   // socket이 연결되면 클라이언트가 이 내부 작업을 함
   console.log('Socket connected');
 
-  io.emit('noticeIn', { notice: `${socket.id}님이 입장했습니다.` });
+  // userList
+  userList.push({ socketid: socket.id, nickName: userNick });
+  console.log(userNick + '님!!!! 입자아앙');
+  console.log(userList);
+
+  io.emit('noticeIn', {
+    notice: `${userNick}(${socket.id.slice(0, 5)})님이 입장했습니다.`,
+    userList: userList,
+  });
 
   socket.emit('skcreated', { socketid: socket.id }); // client에게 보낼 socketid(보내는이의 아이디)
 
@@ -59,7 +69,19 @@ io.on('connection', function (socket) {
   });
 
   socket.on('disconnect', () => {
-    io.emit('noticeOut', { notice: `${socket.id}님 퇴장했습니다.` });
+    // userList 업데이트
+    userList = userList.filter((element) => {
+      // 배열 각 원소의 socketid !== 나가려는 브라우저의 socket.id; 배열에 남겨둠
+      if (element.socketid !== socket.id) {
+        return true;
+      }
+    });
+    console.log(userNick + '님!!!! 퇴자아앙');
+    console.log(userList);
+
+    io.emit('noticeOut', {
+      notice: `${userNick}(${socket.id.slice(0, 5)})님이 퇴장했습니다.`,
+    });
   });
 });
 

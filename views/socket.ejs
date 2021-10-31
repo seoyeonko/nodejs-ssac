@@ -23,6 +23,8 @@
       crossorigin="anonymous"
     ></script>
 
+    <title>채팅</title>
+
     <style>
       .tit_chat {
         /* background-color: #ff9f88; */
@@ -85,42 +87,31 @@
       <div class="row">
         <div class="col-3" id="list-box">
           <div class="tit_chat">User List</div>
-          <div>userlist...</div>
+          <div class="userlist_box">
+            <div class="userlist_item">userlist...</div>
+          </div>
         </div>
         <div class="col-9" id="chat-box">
           <div class="tit_chat">Chat Chat</div>
           <div id="chat"></div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-3">
-          <input
-            type="text"
-            id="nick"
-            class="form-control"
-            placeholder="Change your name"
-            onkeypress="pressEnter()"
-            autofocus
-          />
-        </div>
-        <div class="col-8">
-          <input
-            type="text"
-            id="msg"
-            class="form-control"
-            onkeypress="pressEnter()"
-            placeholder="Write here..."
-          />
-        </div>
-        <div class="col-1">
-          <button
-            class="btn btn-outline-dark"
-            type="button"
-            onclick="sendChat()"
-          >
-            SEND
-          </button>
-        </div>
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="msg"
+          onkeypress="pressEnter()"
+          placeholder="Write here..."
+          autofocus
+        />
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          onclick="sendChat()"
+        >
+          SEND
+        </button>
       </div>
       <h1><%=userNick%></h1>
     </div>
@@ -132,17 +123,17 @@
       console.log(socket);
 
       let socket_id;
+      let userList = []; // 배열 원소: { socketid, nickname }
 
       function pressEnter() {
         if (event.keyCode == 13) sendChat();
       }
 
       function sendChat() {
-        if (($('#nick').val() === '') | ($('#msg').val() === '')) {
-          alert('대화명 혹은 메세지를 입력해주세요');
+        if ($('#msg').val() === '') {
+          alert('메세지를 입력해주세요');
         } else {
           socket.emit('sendMsg', {
-            nickname: $('#nick').val(),
             message: $('#msg').val(),
           });
           $('#msg').val('');
@@ -175,10 +166,10 @@
       socket.on('newMsg', (data) => {
         // 나 != 발신인 // err 여기서 에러났던듯 (시리얼 넘버 vs. 변경된 닉네임)
         if (socket_id['socketid'] != data['socketid']) {
-          console.log('** newMsg (1) **');
-          console.log(socket_id['socketid']); // 소켓아이디 (시리얼 넘버)
-          console.log('** newMsg (2) **');
-          console.log(data['socketid']); // 변경된 닉네임
+          // console.log('** newMsg (1) **');
+          // console.log(socket_id['socketid']); // 소켓아이디 (시리얼 넘버)
+          // console.log('** newMsg (2) **');
+          // console.log(data['socketid']); // 변경된 닉네임
           $('#chat').append(
             `<div id="chat-item-box">
               <div id="chat-item">
@@ -194,6 +185,15 @@
 
       socket.on('noticeIn', (data) => {
         $('#chat').append(`<div class="notice">${data['notice']}</div>`);
+        // data['userList'].forEach((element) => {
+        //  console.log(element.nickName);
+        // });
+        // data['userList'].forEach((element) => console.log(element.nickName));
+
+        userList.length = 0; // 초기화
+        userList = data['userList'];
+        console.log(userList);
+        $('.userlist_item').after(`<div>${userList}</div>`);
       });
 
       socket.on('noticeOut', (data) => {
