@@ -33,7 +33,7 @@
         font-weight: bold;
       }
       #list-box {
-        background-color: #ffcb68;
+        background-color: #ff9f88;
         height: 600px;
         overflow-y: auto;
       }
@@ -45,6 +45,7 @@
       #chat-user {
         color: #303142;
         font-size: 15px;
+        font-weight: 700;
         margin: 6px 0 0 12px;
       }
       #chat-item-box {
@@ -55,7 +56,6 @@
         background-color: #303142;
         color: #f8f8ff;
         border-radius: 8px;
-        min-width: 50px;
         max-width: 300px;
         margin: 0 4px 6px 12px;
         padding: 6px;
@@ -90,9 +90,11 @@
     <div class="container">
       <div class="row">
         <div class="col-4 col-md-3" id="list-box">
-          <div class="tit_chat">User List</div>
+          <div class="tit_chat">
+            <span>User List</span>&nbsp; (<span class="cnt"></span>)
+          </div>
           <div class="userlist_box">
-            <div class="userlist_item">userlist...</div>
+            <div class="userlist_item"></div>
           </div>
         </div>
         <div class="col-8 col-md-9" id="chat-box">
@@ -127,7 +129,6 @@
       console.log(socket);
 
       let socket_id;
-      let userList = []; // 배열 원소: { socketid, nickName }
 
       function pressEnter() {
         if (event.keyCode == 13) sendChat();
@@ -168,22 +169,12 @@
       });
 
       socket.on('newMsg', (data) => {
-        // 나 != 발신인 // err 여기서 에러났던듯 (시리얼 넘버 vs. 변경된 닉네임)
+        // 나 != 발신인
         if (socket_id['socketid'] != data['socketid']) {
-          // console.log('** newMsg **');
-          // console.log(data['socketid']);
-          // console.log(data['userList']);
-          // console.log(
-          //   data['userList'].filter((arr) => arr.socketid === data['socketid'])
-          // );
-
-          let nowUser = data['userList'].filter(
-            (arr) => arr.socketid === data['socketid']
-          ); // 현재 말하는 사람
-
+          console.log('** newMsg **');
           $('#chat').append(
             `<div id="msg-box">
-              <div id="chat-user">${nowUser[0].nickName}</div>
+              <div id="chat-user">${data['userList'][data['socketid']]}</div>
               <div id="chat-item-box">
                 <div id="chat-item">
                   <span>${data['message']}</span>
@@ -198,20 +189,23 @@
       });
 
       socket.on('noticeIn', (data) => {
-        $('#chat').append(`<div class="notice">${data['notice']}</div>`);
-        // data['userList'].forEach((element) => {
-        //  console.log(element.nickName);
-        // });
-        // data['userList'].forEach((element) => console.log(element.nickName));
-
-        userList.length = 0; // 초기화
-        userList = data['userList'];
-        console.log(userList);
-        $('.userlist_item').after(`<div>${userList}</div>`);
+        let cnt = Object.keys(data['userList']).length; // 리스트 길이 = 접속자 수
+        $('.cnt').text(cnt);
+        $('.userlist_item').html('');
+        for (let i in data['userList']) {
+          $('.userlist_item').append(`<div>${data['userList'][i]}</div>`);
+        }
+        $('#chat').append(`<div class="notice">${data['notice']}</div>`); // 입장 공지
       });
 
       socket.on('noticeOut', (data) => {
-        $('#chat').append(`<div class="notice">${data['notice']}</div>`);
+        let cnt = Object.keys(data['userList']).length; // 리스트 길이 = 접속자 수
+        $('.cnt').text(cnt);
+        $('.userlist_item').html('');
+        for (let i in data['userList']) {
+          $('.userlist_item').append(`<div>${data['userList'][i]}</div>`);
+        }
+        $('#chat').append(`<div class="notice">${data['notice']}</div>`); // 퇴장 공지
       });
     </script>
   </body>

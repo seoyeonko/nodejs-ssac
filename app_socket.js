@@ -6,8 +6,7 @@ const io = require('socket.io')(http);
 
 const PORT = 8000; // PORT number
 let userNick;
-let userList = []; // 배열 원소: { socketid, nickname }
-// userList.length = 0; // 초기화
+let userList = {}; // 배열 원소: { socketid, nickname }
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -45,7 +44,7 @@ io.on('connection', function (socket) {
   console.log('Socket connected');
 
   // userList
-  userList.push({ socketid: socket.id, nickName: userNick });
+  userList[socket.id] = userNick; // 리스트에 추가
   console.log(userNick + '님!!!! 입자아앙');
   console.log(userList);
 
@@ -71,17 +70,24 @@ io.on('connection', function (socket) {
 
   socket.on('disconnect', () => {
     // userList 업데이트
-    userList = userList.filter((element) => {
-      // 배열 각 원소의 socketid !== 나가려는 브라우저의 socket.id; 배열에 남겨둠
-      if (element.socketid !== socket.id) {
-        return true;
-      }
-    });
-    console.log(userNick + '님!!!! 퇴자아앙');
+    // userList = userList.filter((element) => {
+    //   // 배열 각 원소의 socketid !== 나가려는 브라우저의 socket.id; 배열에 남겨둠
+    //   if (element.socketid !== socket.id) {
+    //     return true;
+    //   }
+    // });
+    // console.log(userList);
+
+    console.log(userList[socket.id] + '님!!!! 퇴자아앙');
+    delete userList[socket.id]; // 리스트에서 삭제
     console.log(userList);
 
     io.emit('noticeOut', {
-      notice: `${userNick}(${socket.id.slice(0, 5)})님이 퇴장했습니다.`,
+      notice: `${userList[socket.id]}(${socket.id.slice(
+        0,
+        5
+      )})님이 퇴장했습니다.`,
+      userList: userList,
     });
   });
 });
