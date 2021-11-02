@@ -42,14 +42,14 @@
         height: 600px;
         overflow-y: auto;
       }
+      #chat-user {
+        color: #303142;
+        font-size: 15px;
+        margin: 6px 0 0 12px;
+      }
       #chat-item-box {
         display: flex;
         align-items: flex-end;
-      }
-      #mychat-item-box {
-        display: flex;
-        align-items: flex-end;
-        justify-content: right;
       }
       #chat-item {
         background-color: #303142;
@@ -57,8 +57,13 @@
         border-radius: 8px;
         min-width: 50px;
         max-width: 300px;
-        margin: 6px 4px 6px 12px;
+        margin: 0 4px 6px 12px;
         padding: 6px;
+      }
+      #mychat-item-box {
+        display: flex;
+        align-items: flex-end;
+        justify-content: right;
       }
       #mychat-item {
         background-color: #7289f4;
@@ -67,7 +72,6 @@
         max-width: 300px;
         margin: 6px 12px 6px 4px;
         padding: 6px;
-        text-align: end;
       }
       .time {
         font-size: 10px;
@@ -85,13 +89,13 @@
   <body>
     <div class="container">
       <div class="row">
-        <div class="col-3" id="list-box">
+        <div class="col-4 col-md-3" id="list-box">
           <div class="tit_chat">User List</div>
           <div class="userlist_box">
             <div class="userlist_item">userlist...</div>
           </div>
         </div>
-        <div class="col-9" id="chat-box">
+        <div class="col-8 col-md-9" id="chat-box">
           <div class="tit_chat">Chat Chat</div>
           <div id="chat"></div>
         </div>
@@ -123,7 +127,7 @@
       console.log(socket);
 
       let socket_id;
-      let userList = []; // 배열 원소: { socketid, nickname }
+      let userList = []; // 배열 원소: { socketid, nickName }
 
       function pressEnter() {
         if (event.keyCode == 13) sendChat();
@@ -166,16 +170,26 @@
       socket.on('newMsg', (data) => {
         // 나 != 발신인 // err 여기서 에러났던듯 (시리얼 넘버 vs. 변경된 닉네임)
         if (socket_id['socketid'] != data['socketid']) {
-          // console.log('** newMsg (1) **');
-          // console.log(socket_id['socketid']); // 소켓아이디 (시리얼 넘버)
-          // console.log('** newMsg (2) **');
-          // console.log(data['socketid']); // 변경된 닉네임
+          // console.log('** newMsg **');
+          // console.log(data['socketid']);
+          // console.log(data['userList']);
+          // console.log(
+          //   data['userList'].filter((arr) => arr.socketid === data['socketid'])
+          // );
+
+          let nowUser = data['userList'].filter(
+            (arr) => arr.socketid === data['socketid']
+          ); // 현재 말하는 사람
+
           $('#chat').append(
-            `<div id="chat-item-box">
-              <div id="chat-item">
-                <span>${data['socketid']}</span> : <span>${data['message']}</span>
+            `<div id="msg-box">
+              <div id="chat-user">${nowUser[0].nickName}</div>
+              <div id="chat-item-box">
+                <div id="chat-item">
+                  <span>${data['message']}</span>
+                </div>
+                <span class="time">${data['now']}</span>
               </div>
-              <span class="time">${data['now']}</span>
             </div>`
           );
         }
