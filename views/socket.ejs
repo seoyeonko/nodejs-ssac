@@ -135,14 +135,12 @@
       }
 
       function sendChat() {
-        if ($('#msg').val() === '') {
-          alert('메세지를 입력해주세요');
-        } else {
+        if ($('#msg').val().trim() !== '') {
           socket.emit('sendMsg', {
             message: $('#msg').val(),
           });
-          $('#msg').val('');
         }
+        $('#msg').val('');
       }
 
       // 소켓 연결시 바로 client가 socketid를 가지도록 함
@@ -199,13 +197,16 @@
       });
 
       socket.on('noticeOut', (data) => {
-        let cnt = Object.keys(data['userList']).length; // 리스트 길이 = 접속자 수
+        $('#chat').append(`<div class="notice">${data['notice']}</div>`); // 퇴장 공지
+      });
+
+      socket.on('updateList', (data) => {
+        let cnt = Object.keys(data['userList']).length; // 접속자 수 = 리스트 길이
         $('.cnt').text(cnt);
         $('.userlist_item').html('');
         for (let i in data['userList']) {
           $('.userlist_item').append(`<div>${data['userList'][i]}</div>`);
         }
-        $('#chat').append(`<div class="notice">${data['notice']}</div>`); // 퇴장 공지
       });
     </script>
   </body>
