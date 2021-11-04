@@ -124,6 +124,8 @@
         </button>
       </div>
       <h1><%=userNick%></h1>
+      <!-- <div><%=filename%></div>
+      <img src="img/<%=filename%>" alt="프로필사진" width="200px" /> -->
     </div>
 
     <script>
@@ -151,9 +153,13 @@
         let cnt = Object.keys(data['userList']).length; // 접속자 수 = 리스트 길이
         $('.cnt').text(cnt);
         $('.userlist_item').html('');
+
         for (let i in data['userList']) {
           $('.userlist_item').append(
-            `<div class="user_item">${data['userList'][i]}</div>`
+            `<div class="d-flex">
+              <img src="img/${data['profilelList'][i]}" alt="프로필사진" width="50px" />
+              <div class="user_item">${data['userList'][i]}</div>
+            </div>`
           );
         }
       }
@@ -189,6 +195,9 @@
             `<div id="msg-box">
               <div id="chat-user">${data['userList'][data['socketid']]}</div>
               <div id="chat-item-box">
+                <img src="img/${
+                  data['profilelList'][data['socketid']]
+                }" alt="프로필사진" width="50px" />
                 <div id="chat-item">
                   <span>${data['message']}</span>
                 </div>

@@ -22,19 +22,62 @@
     ></script>
 
     <title>채팅 | 닉네임 설정</title>
+
+    <style>
+      html,
+      body {
+        height: 100vh;
+      }
+      #container {
+        width: 100%;
+        height: 100vh;
+        background: rgb(48, 49, 66);
+        background: linear-gradient(
+          69deg,
+          rgba(48, 49, 66, 1) 0%,
+          rgba(38, 38, 47, 1) 60%,
+          rgba(29, 29, 31, 1) 100%
+        );
+      }
+      #tit_chat {
+        color: #f8f8ff;
+      }
+    </style>
   </head>
   <body>
-    <form action="http://101.101.218.8:8000/chat" method="POST">
-      <div class="input-group mb-3">
-        <input
-          type="text"
-          class="form-control"
-          name="nickname"
-          placeholder="What's your nickname?"
-          autofocus
-        />
-        <button type="submit" class="btn btn-outline-secondary">ENTER</button>
+    <div
+      id="container"
+      class="d-flex justify-content-center align-items-center"
+    >
+      <div>
+        <h3 id="tit_chat" class="text-center mb-3">채팅에 입장하시겠습니까?</h3>
+        <form
+          action="http://101.101.218.8:8000/chat"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="profile">Profile</label>
+            <input
+              type="file"
+              class="form-control"
+              id="profile"
+              name="profile"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="nickname">Nickname</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nickname"
+              name="nickname"
+              placeholder="What's your nickname?"
+            />
+            <button type="submit" class="btn btn-outline-light">ENTER</button>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   </body>
 </html>

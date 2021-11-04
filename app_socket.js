@@ -3,24 +3,45 @@ const app = express();
 const body = require('body-parser');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const multer = require('multer');
+const path = require('path');
 
 const PORT = 8000; // PORT number
-let userNick;
-let userList = {}; // 배열 원소: { socketid : nickname, ... }
 
-app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
+let userNick;
+let filename;
+let userList = {}; // 배열 원소: { socketid : nickname, ... }
+let profilelList = {}; // 배열 원소: { socketid : filename}
+let upload_multer = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, callback) => {
+      callback(null, 'uploads/');
+    },
+    filename: (req, file, callback) => {
+      console.log(file); // 업로드 전 file 속성
+      let ext = path.extname(file.originalname); // 확장자
+      filename = path.basename(file.originalname, ext) + Date.now() + ext;
+      callback(null, filename); // 파일명: 파일명+날짜+확장자
+    },
+  }),
+  // limits: { filesize: 5 * 1024 * 1024 }, // 파일 사이즈 5MB 제한
+});
 
 app.use(body.urlencoded({ extended: false }));
 app.use(body.json());
+app.use('/img', express.static(__dirname + '/uploads'));
+
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
 
 app.get('/chat', (req, res) => {
   res.render('setNick');
 });
 
-app.post('/chat', (req, res) => {
+app.post('/chat', upload_multer.single('profile'), (req, res) => {
+  console.log(req.file); // 업로드 후 결과
   userNick = req.body.nickname.trim();
-  res.render('socket', { userNick: userNick });
+  res.render('socket', { userNick: userNick, filename: filename });
 });
 
 function getTime() {
@@ -45,8 +66,11 @@ io.on('connection', function (socket) {
 
   // userList
   userList[socket.id] = userNick; // 리스트에 추가
+  profilelList[socket.id] = filename;
   console.log(userList[socket.id] + '님!!!! 입자아앙');
+  console.log('** connection **');
   console.log(userList);
+  console.log(profilelList);
 
   io.emit('noticeIn', {
     notice: `${userList[socket.id]}(${socket.id.slice(
@@ -54,6 +78,7 @@ io.on('connection', function (socket) {
       5
     )})님이 입장했습니다.`,
     userList: userList,
+    profilelList: profilelList,
   });
 
   socket.emit('skcreated', { socketid: socket.id }); // client에게 보낼 socketid(보내는이의 아이디)
@@ -64,6 +89,7 @@ io.on('connection', function (socket) {
       userList: userList,
       message: msg['message'],
       now: getTime(),
+      profilelList: profilelList,
     });
     socket.emit('myMsg', {
       message: msg['message'],
@@ -83,9 +109,13 @@ io.on('connection', function (socket) {
     // 리스트 업데이트
     console.log(userList[socket.id] + '님!!!! 퇴자아앙');
     delete userList[socket.id]; // 리스트에서 삭제
+    delete profilelList[socket.id];
+    console.log('** updateList **');
     console.log(userList);
+    console.log(profilelList);
     io.emit('updateList', {
       userList: userList,
+      profilelList: profilelList,
     });
   });
 });
