@@ -1,0 +1,12 @@
+<!-- multer 실습 -->
+<div>단일 파일</div>
+<form action="upload" method="post" enctype="multipart/form-data">
+  <input type="file" name="userfile" />
+  <input type="submit" value="전송" />
+</form>
+
+<div>다중 파일</div>
+<form action="upload-multiple" method="post" enctype="multipart/form-data">
+  <input type="file" name="userfile" multiple />
+  <input type="submit" value="전송" />
+</form>

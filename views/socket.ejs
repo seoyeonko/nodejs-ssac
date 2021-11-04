@@ -32,6 +32,10 @@
         font-size: 24px;
         font-weight: bold;
       }
+      .user_item {
+        font-size: 20px;
+        margin: 3px 0;
+      }
       #list-box {
         background-color: #ff9f88;
         height: 600px;
@@ -143,6 +147,17 @@
         $('#msg').val('');
       }
 
+      function updateList(data) {
+        let cnt = Object.keys(data['userList']).length; // 접속자 수 = 리스트 길이
+        $('.cnt').text(cnt);
+        $('.userlist_item').html('');
+        for (let i in data['userList']) {
+          $('.userlist_item').append(
+            `<div class="user_item">${data['userList'][i]}</div>`
+          );
+        }
+      }
+
       // 소켓 연결시 바로 client가 socketid를 가지도록 함
       socket.on('skcreated', (data) => {
         socket_id = data;
@@ -187,12 +202,7 @@
       });
 
       socket.on('noticeIn', (data) => {
-        let cnt = Object.keys(data['userList']).length; // 리스트 길이 = 접속자 수
-        $('.cnt').text(cnt);
-        $('.userlist_item').html('');
-        for (let i in data['userList']) {
-          $('.userlist_item').append(`<div>${data['userList'][i]}</div>`);
-        }
+        updateList(data);
         $('#chat').append(`<div class="notice">${data['notice']}</div>`); // 입장 공지
       });
 
@@ -201,12 +211,7 @@
       });
 
       socket.on('updateList', (data) => {
-        let cnt = Object.keys(data['userList']).length; // 접속자 수 = 리스트 길이
-        $('.cnt').text(cnt);
-        $('.userlist_item').html('');
-        for (let i in data['userList']) {
-          $('.userlist_item').append(`<div>${data['userList'][i]}</div>`);
-        }
+        updateList(data);
       });
     </script>
   </body>
