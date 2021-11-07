@@ -10,8 +10,8 @@ const PORT = 8000; // PORT number
 
 let userNick;
 let filename;
-let userList = {}; // 배열 원소: { socketid : nickname, ... }
-let profilelList = {}; // 배열 원소: { socketid : filename}
+let userList = {}; // 배열 원소: { socketid : {nickname, filename}, ... }
+// let profilelList = {}; // 배열 원소: { socketid : filename}
 let upload_multer = multer({
   storage: multer.diskStorage({
     destination: (req, file, callback) => {
@@ -65,20 +65,17 @@ io.on('connection', function (socket) {
   console.log('Socket connected');
 
   // userList
-  userList[socket.id] = userNick; // 리스트에 추가
-  profilelList[socket.id] = filename;
-  console.log(userList[socket.id] + '님!!!! 입자아앙');
+  userList[socket.id] = { nickname: userNick, filename: filename } // 리스트에 추가
+  console.log(userList[socket.id].nickname + '님!!!! 입자아앙');
   console.log('** connection **');
   console.log(userList);
-  console.log(profilelList);
 
   io.emit('noticeIn', {
-    notice: `${userList[socket.id]}(${socket.id.slice(
+    notice: `${userList[socket.id].nickname}(${socket.id.slice(
       0,
       5
     )})님이 입장했습니다.`,
     userList: userList,
-    profilelList: profilelList,
   });
 
   socket.emit('skcreated', { socketid: socket.id }); // client에게 보낼 socketid(보내는이의 아이디)
@@ -89,7 +86,6 @@ io.on('connection', function (socket) {
       userList: userList,
       message: msg['message'],
       now: getTime(),
-      profilelList: profilelList,
     });
     socket.emit('myMsg', {
       message: msg['message'],
@@ -100,22 +96,20 @@ io.on('connection', function (socket) {
   socket.on('disconnect', () => {
     // 퇴장 공지
     io.emit('noticeOut', {
-      notice: `${userList[socket.id]}(${socket.id.slice(
+      notice: `${userList[socket.id].nickname}(${socket.id.slice(
         0,
         5
       )})님이 퇴장했습니다.`,
     });
 
     // 리스트 업데이트
-    console.log(userList[socket.id] + '님!!!! 퇴자아앙');
+    console.log(userList[socket.id].nickname + '님!!!! 퇴자아앙');
     delete userList[socket.id]; // 리스트에서 삭제
-    delete profilelList[socket.id];
     console.log('** updateList **');
     console.log(userList);
-    console.log(profilelList);
+
     io.emit('updateList', {
       userList: userList,
-      profilelList: profilelList,
     });
   });
 });

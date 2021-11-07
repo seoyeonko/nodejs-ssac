@@ -26,6 +26,11 @@
     <title>채팅</title>
 
     <style>
+      div.hasProfile > img {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+      }
       .tit_chat {
         /* background-color: #ff9f88; */
         padding: 4px 8px;
@@ -124,8 +129,6 @@
         </button>
       </div>
       <h1><%=userNick%></h1>
-      <!-- <div><%=filename%></div>
-      <img src="img/<%=filename%>" alt="프로필사진" width="200px" /> -->
     </div>
 
     <script>
@@ -156,9 +159,9 @@
 
         for (let i in data['userList']) {
           $('.userlist_item').append(
-            `<div class="d-flex">
-              <img src="img/${data['profilelList'][i]}" alt="프로필사진" width="50px" />
-              <div class="user_item">${data['userList'][i]}</div>
+            `<div class="d-flex hasProfile"">
+              <img src="img/${data['userList'][i].filename}" alt="프로필사진" />
+              <div class="user_item">${data['userList'][i].nickname}</div>
             </div>`
           );
         }
@@ -193,11 +196,11 @@
           console.log('** newMsg **');
           $('#chat').append(
             `<div id="msg-box">
-              <div id="chat-user">${data['userList'][data['socketid']]}</div>
-              <div id="chat-item-box">
+              <div id="chat-user">${data['userList'][data['socketid']].nickname}</div>
+              <div class="hasProfile" id="chat-item-box">
                 <img src="img/${
-                  data['profilelList'][data['socketid']]
-                }" alt="프로필사진" width="50px" />
+                  data['userList'][data['socketid']].filename
+                }" alt="프로필사진"/>
                 <div id="chat-item">
                   <span>${data['message']}</span>
                 </div>
