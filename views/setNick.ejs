@@ -42,6 +42,10 @@
       #tit_chat {
         color: #f8f8ff;
       }
+      .desc_chat {
+        color: #f8f8ff;
+        font-size: 12px;
+      }
     </style>
   </head>
   <body>
@@ -50,7 +54,12 @@
       class="d-flex justify-content-center align-items-center"
     >
       <div>
-        <h3 id="tit_chat" class="text-center mb-3">채팅에 입장하시겠습니까?</h3>
+        <div class="d-flex justify-content-center align-items-center">
+          <div>
+            <h3 id="tit_chat" class="text-center mb-3">채팅에 입장하시겠습니까?</h3>
+            <p class="desc_chat">프로필 이미지와 닉네임을 설정해주세요. 프로필 미설정시 기본 이미지가 적용됩니다</p>
+          </div>
+        </div>
         <form
           action="chat"
           method="POST"

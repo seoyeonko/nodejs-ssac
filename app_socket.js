@@ -11,7 +11,6 @@ const PORT = 8000; // PORT number
 let userNick;
 let filename;
 let userList = {}; // 배열 원소: { socketid : {nickname, filename}, ... }
-// let profilelList = {}; // 배열 원소: { socketid : filename}
 let upload_multer = multer({
   storage: multer.diskStorage({
     destination: (req, file, callback) => {
@@ -40,6 +39,9 @@ app.get('/chat', (req, res) => {
 
 app.post('/chat', upload_multer.single('profile'), (req, res) => {
   console.log(req.file); // 업로드 후 결과
+  if (req.file === undefined) {
+    filename = 'userDefault.png'
+  } 
   userNick = req.body.nickname.trim();
   res.render('socket', { userNick: userNick, filename: filename });
 });

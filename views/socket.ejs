@@ -22,6 +22,8 @@
       integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
       crossorigin="anonymous"
     ></script>
+    <!-- icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
 
     <title>채팅</title>
 
@@ -31,8 +33,10 @@
         height: 50px;
         border-radius: 12px;
       }
+      img.profile_item {
+        margin-right: 10px;
+      }
       .tit_chat {
-        /* background-color: #ff9f88; */
         padding: 4px 8px;
         font-size: 24px;
         font-weight: bold;
@@ -159,9 +163,14 @@
 
         for (let i in data['userList']) {
           $('.userlist_item').append(
-            `<div class="d-flex hasProfile"">
-              <img src="img/${data['userList'][i].filename}" alt="프로필사진" />
-              <div class="user_item">${data['userList'][i].nickname}</div>
+            `<div class="d-flex justify-content-between">
+              <div class="d-flex hasProfile">
+                <img class="profile_item" src="img/${data['userList'][i].filename}" alt="프로필사진" />
+                <div class="user_item">${data['userList'][i].nickname}</div>
+              </div>
+              <div>
+                <button class="DM_btn btn btn-outline-dark" type="submit"><i class="bi bi-chat"></i></button>
+              </div>
             </div>`
           );
         }
