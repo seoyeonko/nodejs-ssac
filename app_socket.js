@@ -40,8 +40,8 @@ app.get('/chat', (req, res) => {
 app.post('/chat', upload_multer.single('profile'), (req, res) => {
   console.log(req.file); // 업로드 후 결과
   if (req.file === undefined) {
-    filename = 'userDefault.png'
-  } 
+    filename = 'userDefault.png';
+  }
   userNick = req.body.nickname.trim();
   res.render('socket', { userNick: userNick, filename: filename });
 });
@@ -65,26 +65,31 @@ function getTime() {
 io.on('connection', function (socket) {
   // socket이 연결되면 클라이언트가 이 내부 작업을 함
   console.log('Socket connected');
+  let socketID = socket.id;
 
+  // if (userList[socketID].nickname === undefined) {
+  //   delete userList[socketID];
+  // }
   // userList
-  userList[socket.id] = { nickname: userNick, filename: filename } // 리스트에 추가
-  console.log(userList[socket.id].nickname + '님!!!! 입자아앙');
+  userList[socketID] = { nickname: userNick, filename: filename }; // 리스트에 추가
+  console.log(userList[socketID].nickname + '님!!!! 입자아앙');
   console.log('** connection **');
   console.log(userList);
+  console.log(userList[socketID].nickname);
 
   io.emit('noticeIn', {
-    notice: `${userList[socket.id].nickname}(${socket.id.slice(
+    notice: `${userList[socketID].nickname}(${socketID.slice(
       0,
       5
     )})님이 입장했습니다.`,
     userList: userList,
   });
 
-  socket.emit('skcreated', { socketid: socket.id }); // client에게 보낼 socketid(보내는이의 아이디)
+  socket.emit('skcreated', { socketid: socketID }); // client에게 보낼 socketid(보내는이의 아이디)
 
   socket.on('sendMsg', (msg) => {
     io.emit('newMsg', {
-      socketid: socket.id, // 변경된 닉네임 -> 시리얼 넘버
+      socketid: socketID, // 변경된 닉네임 -> 시리얼 넘버
       userList: userList,
       message: msg['message'],
       now: getTime(),
@@ -98,15 +103,15 @@ io.on('connection', function (socket) {
   socket.on('disconnect', () => {
     // 퇴장 공지
     io.emit('noticeOut', {
-      notice: `${userList[socket.id].nickname}(${socket.id.slice(
+      notice: `${userList[socketID].nickname}(${socketID.slice(
         0,
         5
       )})님이 퇴장했습니다.`,
     });
 
     // 리스트 업데이트
-    console.log(userList[socket.id].nickname + '님!!!! 퇴자아앙');
-    delete userList[socket.id]; // 리스트에서 삭제
+    console.log(userList[socketID].nickname + '님!!!! 퇴자아앙');
+    delete userList[socketID]; // 리스트에서 삭제
     console.log('** updateList **');
     console.log(userList);
 

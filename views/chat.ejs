@@ -22,117 +22,79 @@
       integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
       crossorigin="anonymous"
     ></script>
+    <!-- font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;900&display=swap"
+      rel="stylesheet"
+    />
     <!-- icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css"
+    />
 
     <title>채팅</title>
 
     <style>
-      div.hasProfile > img {
-        width: 50px;
-        height: 50px;
-        border-radius: 12px;
-      }
-      img.profile_item {
-        margin-right: 10px;
-      }
-      .tit_chat {
-        padding: 4px 8px;
-        font-size: 24px;
-        font-weight: bold;
-      }
-      .user_item {
-        font-size: 20px;
-        margin: 3px 0;
-      }
-      #list-box {
-        background-color: #ff9f88;
-        height: 600px;
-        overflow-y: auto;
-      }
-      #chat-box {
-        background-color: #f8f8ff;
-        height: 600px;
-        overflow-y: auto;
-      }
-      #chat-user {
-        color: #303142;
-        font-size: 15px;
-        font-weight: 700;
-        margin: 6px 0 0 12px;
-      }
-      #chat-item-box {
-        display: flex;
-        align-items: flex-end;
-      }
-      #chat-item {
-        background-color: #303142;
+      html,
+      body {
+        height: 100vh;
         color: #f8f8ff;
-        border-radius: 8px;
-        max-width: 300px;
-        margin: 0 4px 6px 12px;
-        padding: 6px;
       }
-      #mychat-item-box {
-        display: flex;
-        align-items: flex-end;
-        justify-content: right;
-      }
-      #mychat-item {
-        background-color: #7289f4;
-        color: #f8f8ff;
-        border-radius: 8px;
-        max-width: 300px;
-        margin: 6px 12px 6px 4px;
-        padding: 6px;
-      }
-      .time {
-        font-size: 10px;
-        margin: 4px 0;
-      }
-      .notice {
-        color: #303142;
-        font-style: italic;
+      html {
+        font-family: 'Noto Sans KR', sans-serif;
         font-size: 14px;
-        text-align: center;
-        margin: 2px 0;
+      }
+      body {
+        overflow-x: hidden; /* 가로 스크롤 안생기게 */
+        /* letter-spacing: -0.05em; */
+      }
+      #container {
+        width: 100%;
+        height: 100vh;
+        background: rgb(48, 49, 66);
+        background: linear-gradient(
+          69deg,
+          rgba(48, 49, 66, 1) 0%,
+          rgba(38, 38, 47, 1) 60%,
+          rgba(29, 29, 31, 1) 100%
+        );
+        padding: 50px 0;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="row">
-        <div class="col-4 col-md-3" id="list-box">
-          <div class="tit_chat">
-            <span>User List</span>&nbsp; (<span class="cnt"></span>)
+    <div id="container" class="bg-light">
+      <div class="container">
+        <div class="row h-100">
+          <div class="one col-3 p-0 bg-success">
+            <div class="three">my</div>
+            <div class="four">userlist</div>
           </div>
-          <div class="userlist_box">
-            <div class="userlist_item"></div>
+          <div class="two col-9 p-0 bg-danger">
+            <div class="bg-warning">chatting</div>
+            <div class="input-wrapper m-0">
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="msg"
+                  onkeypress="pressEnter()"
+                  placeholder="Write here..."
+                  autofocus
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  onclick="sendChat()"
+                >
+                  SEND
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-8 col-md-9" id="chat-box">
-          <div class="tit_chat">Chat Chat</div>
-          <div id="chat"></div>
-        </div>
       </div>
-      <div class="input-group mb-3">
-        <input
-          type="text"
-          class="form-control"
-          id="msg"
-          onkeypress="pressEnter()"
-          placeholder="Write here..."
-          autofocus
-        />
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          onclick="sendChat()"
-        >
-          SEND
-        </button>
-      </div>
-      <h1><%=userNick%></h1>
     </div>
 
     <script>
@@ -205,7 +167,9 @@
           console.log('** newMsg **');
           $('#chat').append(
             `<div id="msg-box">
-              <div id="chat-user">${data['userList'][data['socketid']].nickname}</div>
+              <div id="chat-user">${
+                data['userList'][data['socketid']].nickname
+              }</div>
               <div class="hasProfile" id="chat-item-box">
                 <img src="img/${
                   data['userList'][data['socketid']].filename
