@@ -36,43 +36,114 @@
     <title>채팅</title>
 
     <style>
-      html,
-      body {
-        height: 100vh;
-        color: #f8f8ff;
+      :root {
+        --color-black: #1d1d1f;
+        --color-navy: #303142;
+        --color-white: #f8f8ff;
+        --color-blue: #7289f4;
+        --color-coral: #ff9f88;
+        --color-orange: #ffcb68;
+        --color-gray1: #cbcbd1;
+        --color-gray2: #c1c1c8;
+        --color-gray3: #8d8d93;
+        --color-gray4: #5c5c61;
+        --color-gray4: #434349;
       }
+
       html {
+        height: 100vh;
         font-family: 'Noto Sans KR', sans-serif;
         font-size: 14px;
       }
       body {
+        height: 100vh;
         overflow-x: hidden; /* 가로 스크롤 안생기게 */
-        /* letter-spacing: -0.05em; */
+        box-sizing: border-box;
+        color: var(--color-black);
       }
       #container {
         width: 100%;
         height: 100vh;
-        background: rgb(48, 49, 66);
+        /* background: rgb(48, 49, 66);
         background: linear-gradient(
           69deg,
           rgba(48, 49, 66, 1) 0%,
           rgba(38, 38, 47, 1) 60%,
           rgba(29, 29, 31, 1) 100%
-        );
+        ); */
         padding: 50px 0;
+      }
+      .one {
+      }
+      .three {
+        border-radius: 8px;
+        height: 20%;
+        background-color: var(--color-blue);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .my-wrapper {
+      }
+      .my-profile {
+        margin-right: 15px;
+      }
+      .my-username {
+        font-weight: 500;
+        font-size: 1.5rem;
+        letter-spacing: 0.1rem;
+      }
+      .four {
+        border-radius: 8px;
+        height: 80%;
+        background-color: var(--color-gray1);
+      }
+      .two {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: var(--color-white);
+        border-radius: 8px;
+      }
+      .chatting-warpper {
+      }
+      .chatting-tit {
+        font-size: 3rem;
+        font-weight: 700;
+        padding: 0 20px;
+      }
+      .chatting-window {
+      }
+      .input-wrapper {
       }
     </style>
   </head>
   <body>
-    <div id="container" class="bg-light">
+    <div id="container">
       <div class="container">
         <div class="row h-100">
-          <div class="one col-3 p-0 bg-success">
-            <div class="three">my</div>
+          <div class="one col-3 p-0">
+            <div class="three">
+              <div class="my-wrapper">
+                <div>
+                  <img
+                    class="my-profile"
+                    src="../uploads/userDefault.png"
+                    alt="나의 프로필 사진"
+                    width="75px"
+                  />
+                  <span class="my-username">USERNAME</span>
+                </div>
+              </div>
+            </div>
             <div class="four">userlist</div>
           </div>
-          <div class="two col-9 p-0 bg-danger">
-            <div class="bg-warning">chatting</div>
+          <div class="two col-9 p-0">
+            <div class="chatting-wrapper h-100">
+              <div class="chatting-tit">Chat</div>
+              <div class="chatting-window">aa</div>
+            </div>
             <div class="input-wrapper m-0">
               <div class="input-group">
                 <input
@@ -85,7 +156,7 @@
                 />
                 <button
                   type="button"
-                  class="btn btn-outline-secondary"
+                  class="btn btn-secondary"
                   onclick="sendChat()"
                 >
                   SEND

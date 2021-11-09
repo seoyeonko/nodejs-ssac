@@ -43,7 +43,7 @@ app.post('/chat', upload_multer.single('profile'), (req, res) => {
     filename = 'userDefault.png';
   }
   userNick = req.body.nickname.trim();
-  res.render('socket', { userNick: userNick, filename: filename });
+  res.render('chat', { userNick: userNick, filename: filename }); // socket
 });
 
 function getTime() {
