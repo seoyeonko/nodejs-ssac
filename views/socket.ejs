@@ -23,7 +23,10 @@
       crossorigin="anonymous"
     ></script>
     <!-- icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css"
+    />
 
     <title>채팅</title>
 
@@ -205,7 +208,9 @@
           console.log('** newMsg **');
           $('#chat').append(
             `<div id="msg-box">
-              <div id="chat-user">${data['userList'][data['socketid']].nickname}</div>
+              <div id="chat-user">${
+                data['userList'][data['socketid']].nickname
+              }</div>
               <div class="hasProfile" id="chat-item-box">
                 <img src="img/${
                   data['userList'][data['socketid']].filename

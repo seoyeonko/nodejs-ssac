@@ -47,7 +47,7 @@
         --color-gray2: #c1c1c8;
         --color-gray3: #8d8d93;
         --color-gray4: #5c5c61;
-        --color-gray4: #434349;
+        --color-gray5: #434349;
       }
 
       html {
@@ -75,30 +75,45 @@
       }
       .one {
       }
+
       .three {
         border-radius: 8px;
         height: 20%;
         background-color: var(--color-blue);
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
       }
       .my-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+        padding: 2em;
       }
       .my-profile {
         margin-right: 15px;
       }
       .my-username {
-        font-weight: 500;
+        font-weight: 700;
         font-size: 1.5rem;
         letter-spacing: 0.1rem;
       }
+
       .four {
         border-radius: 8px;
         height: 80%;
         background-color: var(--color-gray1);
       }
+      .user-cnt {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 48px;
+        padding: 2em;
+      }
+      .user-cnt-tit {
+        font-size: 18px;
+        font-weight: 700;
+      }
+
       .two {
         display: flex;
         flex-direction: column;
@@ -109,13 +124,96 @@
       .chatting-warpper {
       }
       .chatting-tit {
-        font-size: 3rem;
-        font-weight: 700;
-        padding: 0 20px;
+        font-size: 2.6rem;
+        font-weight: 600;
+        padding: 10px 20px;
       }
       .chatting-window {
       }
+
+      .mychat-item-box {
+        display: flex;
+        justify-content: end;
+        margin: 0 20px 10px 0;
+      }
+      .mychat-item1 {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+      }
+      .mychat-item1-time {
+        margin: 0 5px;
+        color: var(--color-navy);
+        font-size: 12px;
+      }
+      .mychat-item2 {
+      }
+      .mychat-item2-who {
+        text-align: end;
+        color: var(--color-navy);
+        font-weight: 500;
+      }
+      .mychat-item2-msgbox {
+        background-color: var(--color-blue);
+        border-radius: 50px 3px 50px 50px;
+        padding: 10px;
+      }
+      .mychat-item2-msg {
+        color: var(--color-white);
+        font-weight: 500;
+      }
+
+      .chat-item-box {
+        display: flex;
+        justify-content: start;
+        margin: 0 0 10px 20px;
+      }
+      .chat-item1 {
+      }
+      .chat-item1-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+      }
+      .chat-item2 {
+        margin: 0 0 0 10px;
+      }
+      .chat-item2-who {
+        color: var(--color-navy);
+        font-weight: 500;
+      }
+      .chat-item2-msgbox {
+        background-color: var(--color-navy);
+        border-radius: 3px 50px 50px 50px;
+        padding: 10px;
+      }
+      .chat-item2-msg {
+        color: var(--color-white);
+        font-weight: 500;
+      }
+      .chat-item3 {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+      }
+      .chat-item3-time {
+        margin: 0 5px;
+        color: var(--color-navy);
+        font-size: 12px;
+      }
+
       .input-wrapper {
+      }
+
+      .notice {
+        font-style: italic;
+        text-align: center;
+      }
+      .notice-in {
+        color: var(--color-gray5);
+      }
+      .notice-out {
+        color: var(--color-gray3);
       }
     </style>
   </head>
@@ -133,16 +231,28 @@
                     alt="나의 프로필 사진"
                     width="75px"
                   />
-                  <span class="my-username">USERNAME</span>
+                </div>
+                <div>
+                  <span class="my-username"><%=userNick%></span>
                 </div>
               </div>
             </div>
-            <div class="four">userlist</div>
+            <div class="four">
+              <div class="user-cnt">
+                <div><span class="user-cnt-tit">USERLIST</span></div>
+                <div>
+                  <span class="user-cnt-tit"
+                    ><i class="bi bi-people-fill"></i>N</span
+                  >
+                </div>
+              </div>
+              <div class="user-list">userlist</div>
+            </div>
           </div>
           <div class="two col-9 p-0">
             <div class="chatting-wrapper h-100">
-              <div class="chatting-tit">Chat</div>
-              <div class="chatting-window">aa</div>
+              <div class="chatting-tit">HI CHAT</div>
+              <div class="chatting-window"></div>
             </div>
             <div class="input-wrapper m-0">
               <div class="input-group">
@@ -172,14 +282,15 @@
       // view에서의 소켓 연결
       // io.connect(): 라이브러리 코드에 정의되어 있음
       let socket = io.connect();
+      let socket_id;
       console.log(socket);
 
-      let socket_id;
-
+      // ok
       function pressEnter() {
         if (event.keyCode == 13) sendChat();
       }
 
+      // ok
       function sendChat() {
         if ($('#msg').val().trim() !== '') {
           socket.emit('sendMsg', {
@@ -189,6 +300,7 @@
         $('#msg').val('');
       }
 
+      //
       function updateList(data) {
         let cnt = Object.keys(data['userList']).length; // 접속자 수 = 리스트 길이
         $('.cnt').text(cnt);
@@ -215,57 +327,75 @@
         // socket_id = data['socketid'];
       });
 
+      // ok
       socket.on('myMsg', (data) => {
         // 내 메세지인 경우, 우정렬 출력되도록
         console.log('** myMsg **');
         // console.log(data);
 
-        $('#chat').append(
-          `<div id="mychat-item-box">
-            <span class="time">${data['now']}</span>
-            <div id="mychat-item">
-              <span>${data['message']}</span>
+        $('.chatting-window').append(
+          `<div class="mychat-item-box">
+            <div class="mychat-item1">
+              <span class="mychat-item1-time">${data['now']}</span>
+            </div>
+            <div class="mychat-item2">
+              <div class="mychat-item2-who">Me</div>
+              <div class="mychat-item2-msgbox">
+                <span class="mychat-item2-msg">${data['message']}</span>
+              </div>
             </div>
           </div>`
         );
 
-        $('#chat-box').scrollTop($('#chat').height()); // scroll
+        $('.chatting-wrapper').scrollTop($('.chatting-window').height()); // scroll
       });
 
+      // ok
       socket.on('newMsg', (data) => {
         // 나 != 발신인
         if (socket_id['socketid'] != data['socketid']) {
           console.log('** newMsg **');
-          $('#chat').append(
-            `<div id="msg-box">
-              <div id="chat-user">${
-                data['userList'][data['socketid']].nickname
-              }</div>
-              <div class="hasProfile" id="chat-item-box">
-                <img src="img/${
+          $('.chatting-window').append(
+            `<div class="chat-item-box">
+              <div class="chat-item1">
+                <img class="chat-item1-img" src="img/${
                   data['userList'][data['socketid']].filename
                 }" alt="프로필사진"/>
-                <div id="chat-item">
-                  <span>${data['message']}</span>
+              </div>
+              <div class="chat-item2">
+                <div class="chat-item2-who">${
+                  data['userList'][data['socketid']].nickname
+                }</div>
+                <div class="chat-item2-msgbox">
+                  <span class="chat-item2-msg">${data['message']}</span>
                 </div>
-                <span class="time">${data['now']}</span>
+              </div>
+              <div class="chat-item3">
+                <span class="chat-item3-time">${data['now']}</span>
               </div>
             </div>`
           );
         }
 
-        $('#chat-box').scrollTop($('#chat').height()); // scroll
+        $('.chatting-wrapper').scrollTop($('.chatting-window').height()); // scroll
       });
 
+      // ok
       socket.on('noticeIn', (data) => {
         updateList(data);
-        $('#chat').append(`<div class="notice">${data['notice']}</div>`); // 입장 공지
+        $('.chatting-window').append(
+          `<div class="notice notice-in">${data['notice']}</div>`
+        ); // 입장 공지
       });
 
+      // ok
       socket.on('noticeOut', (data) => {
-        $('#chat').append(`<div class="notice">${data['notice']}</div>`); // 퇴장 공지
+        $('.chatting-window').append(
+          `<div class="notice notice-out">${data['notice']}</div>`
+        ); // 퇴장 공지
       });
 
+      //
       socket.on('updateList', (data) => {
         updateList(data);
       });
