@@ -101,6 +101,7 @@
         border-radius: 8px;
         height: 80%;
         background-color: var(--color-gray1);
+        color: var(--color-navy);
       }
       .user-cnt {
         display: flex;
@@ -112,6 +113,30 @@
       .user-cnt-tit {
         font-size: 18px;
         font-weight: 700;
+      }
+      .user-item {
+        margin: 0.3em 2em;
+      }
+      .user-item-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .user-item-info {
+        display: flex;
+        align-items: center;
+      }
+      .user-item-profile {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+      }
+      .user-item-who {
+        font-weight: 500;
+        font-size: 1.3em;
+        margin-left: 0.8em;
+      }
+      .user-item-DMbtn {
       }
 
       .two {
@@ -241,12 +266,12 @@
               <div class="user-cnt">
                 <div><span class="user-cnt-tit">USERLIST</span></div>
                 <div>
-                  <span class="user-cnt-tit"
-                    ><i class="bi bi-people-fill"></i>N</span
-                  >
+                  <span class="user-cnt-tit">
+                    <i class="bi bi-people-fill"></i> <span class="cnt"></span>
+                  </span>
                 </div>
               </div>
-              <div class="user-list">userlist</div>
+              <div class="user-list"></div>
             </div>
           </div>
           <div class="two col-9 p-0">
@@ -304,17 +329,19 @@
       function updateList(data) {
         let cnt = Object.keys(data['userList']).length; // 접속자 수 = 리스트 길이
         $('.cnt').text(cnt);
-        $('.userlist_item').html('');
-
+        $('.user-list').html(''); // 유저리스트 지우고
         for (let i in data['userList']) {
-          $('.userlist_item').append(
-            `<div class="d-flex justify-content-between">
-              <div class="d-flex hasProfile">
-                <img class="profile_item" src="img/${data['userList'][i].filename}" alt="프로필사진" />
-                <div class="user_item">${data['userList'][i].nickname}</div>
-              </div>
-              <div>
-                <button class="DM_btn btn btn-outline-dark"><i class="bi bi-chat"></i></button>
+          // 유저리스트 다시 작성
+          $('.user-list').append(
+            `<div class="user-item">
+              <div class="user-item-wrapper">
+                <div class="user-item-info d-flex hasProfile">
+                  <img class="user-item-profile" src="img/${data['userList'][i].filename}" alt="프로필사진" />
+                  <div class="user-item-who">${data['userList'][i].nickname}</div>
+                </div>
+                <div>
+                  <button class="user-item-DMbtn btn btn-outline-dark"><i class="bi bi-chat"></i></button>
+                </div>
               </div>
             </div>`
           );
